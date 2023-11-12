@@ -1,21 +1,26 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const PORT = 5050;
+const cors = require("cors");
+const path = require("path");
+require("dotenv").config();
 
 const app = express();
 
+app.use("/public", express.static(path.join(__dirname, "./public")));
+
 //middleware
 app.use(express.json());
+app.use(cors());
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-
-mongoose.connect("url del database", {
+mongoose.connect(process.env.URL_SERVER_DB, {
   useNewUrlParser: true,
-  useUnifieldTopology: true,
+  useUnifiedTopology: true,
 });
 
 const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "Errore during db connection"));
 db.once("open", () => console.log("database successfully connected"));
-app.listen(PORT, () => console.log(`server up and running on port ${PORT}`));
+app.listen(process.env.PORT_DB, () =>
+  console.log(`server up and running on port ${process.env.PORT_DB}`)
+);
