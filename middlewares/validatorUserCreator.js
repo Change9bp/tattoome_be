@@ -17,7 +17,7 @@ const validatorUserCreator = (req, res, next) => {
     address,
   } = req.body;
 
-  //funzione di verifica url
+  /* #region  SEZIONE FUNZIONE DI VERIFICA ESTENSIONE */
   const isImageURL = (avatar) => {
     const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
     if (!validator.isURL(avatar)) {
@@ -27,6 +27,9 @@ const validatorUserCreator = (req, res, next) => {
     return allowedExtensions.includes(fileExtension.toLowerCase());
   };
 
+  /* #endregion */
+
+  /* #region  SEZIONE DI VALIDAZIONE CONTENUTO */
   if (name && !validator.isString(name)) {
     errors.push("Name must be a non-empty string");
   }
@@ -51,9 +54,7 @@ const validatorUserCreator = (req, res, next) => {
   if (tattooStyle.length > 0 && !Array.isArray(avatar)) {
     errors.push("tattooStyle must be an array with data");
   }
-  if (errors.length > 0) {
-    return res.status(400).json({ errors });
-  }
+
   if (nation && !validator.isString(nation)) {
     errors.push("nation must be a non-empty string");
   }
@@ -66,6 +67,11 @@ const validatorUserCreator = (req, res, next) => {
   if (address && !validator.isString(address)) {
     errors.push("address must be a non-empty string");
   }
+
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
+  /* #endregion */
 
   next();
 };
