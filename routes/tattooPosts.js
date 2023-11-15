@@ -50,7 +50,7 @@ tattooPost.get(
     console.log("page", page, "pagesize", pageSize);
     const posts = await PostModel.find()
       .populate({
-        path: "userCreator",
+        path: "author",
         select: "_id name lastName email avatar",
       })
       .limit(pageSize)

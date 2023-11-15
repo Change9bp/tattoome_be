@@ -104,8 +104,8 @@ userCreator.post(
     const newUser = new UserCreatorModel({
       name: req.body.name,
       lastName: req.body.lastName,
+      alias: req.body.alias,
       email: req.body.email,
-      avatar: req.body.avatar,
       password: hashedPassword, //passiamo la password criptata
     });
     try {
