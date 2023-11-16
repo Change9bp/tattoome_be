@@ -29,7 +29,6 @@ tattooPost.post(
   "/tattooPost/cloudUpload",
   cloudUpload.single("cover"),
   async (req, res) => {
-    //non mi interessa gestire altro se ne occupa cloudinary
     try {
       res.status(200).json({ cover: req.file.path });
     } catch (error) {

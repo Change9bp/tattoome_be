@@ -65,6 +65,23 @@ userCreator.get("/userCreator", async (req, res) => {
   }
 });
 
+//GET SOLO CREATOR
+
+userCreator.get("/userCreator/onlyCreator", async (req, res) => {
+  const userCreators = await UserCreatorModel.find({ role: "creator" });
+  try {
+    res.status(200).send({
+      statusCode: 200,
+      userCreators,
+    });
+  } catch (error) {
+    res.status(500).send({
+      statusCode: 500,
+      message: "Server internal error",
+    });
+  }
+});
+
 //GET BY ID
 
 userCreator.get("/userCreator/:_id", async (req, res) => {
@@ -147,6 +164,13 @@ userCreator.patch(
 
     try {
       const dataToUpdate = req.body;
+
+      if (dataToUpdate.password) {
+        const salt = await bcrypt.genSalt(10);
+        //costante che cripta la password accetta due parametri, il primo cosa deve criptare ed il secondo con che metodo deve criptare
+        dataToUpdate.password = await bcrypt.hash(req.body.password, salt);
+      }
+
       const options = { new: true };
 
       const result = await UserCreatorModel.findByIdAndUpdate(
