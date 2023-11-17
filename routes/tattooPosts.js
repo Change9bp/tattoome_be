@@ -100,6 +100,37 @@ tattooPost.get("/tattooPost/:_id", async (req, res) => {
   }
 });
 
+//GET CON ID DEL CREATOR
+
+tattooPost.get(
+  "/tattooPost/:idCreator/creator",
+  /*verifyToken,*/ async (req, res) => {
+    const { idCreator } = req.params;
+    const findPost = await PostModel.find({ author: idCreator }).populate({
+      path: "author",
+      select: "_id name lastName email avatar",
+    });
+    if (!findPost) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: "No Post whit this creator",
+      });
+    }
+    try {
+      res.status(200).send({
+        statusCode: 200,
+        message: "Post finded",
+        findPost,
+      });
+    } catch (error) {
+      res.status(500).send({
+        statusCode: 500,
+        message: "Server internal error",
+      });
+    }
+  }
+);
+
 //POST
 tattooPost.post(
   "/tattooPost",
